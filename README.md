@@ -77,7 +77,7 @@ Modern software development faces several critical challenges:
 
 ### Component Diagram
 
-![Open Component Diagram](https://github.com/user-attachments/assets/f7278510-30d7-4f80-a509-4f18b06d70e5)
+![Open Component Diagram](https://github.com/user-attachments/assets/e6c1ffd0-117e-4d46-9ca3-4e96578ac7d4)
 
 ### ER Diagram
 
