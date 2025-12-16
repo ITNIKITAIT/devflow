@@ -2,7 +2,9 @@ import { Octokit } from '@octokit/rest';
 
 import { requireAuth } from '../auth';
 
-export class GitHubClient {
+let githubClientInstance: GitHubClient | null = null;
+
+class GitHubClient {
   private octokit: Octokit;
 
   constructor(accessToken: string) {
@@ -93,7 +95,7 @@ export class GitHubClient {
   }
 }
 
-export async function createGitHubClient() {
+export async function getGitHubClient() {
   const session = await requireAuth();
   const accessToken = (session.user as any).accessToken;
 
@@ -101,5 +103,9 @@ export async function createGitHubClient() {
     throw new Error('No GitHub access token found');
   }
 
-  return new GitHubClient(accessToken);
+  if (!githubClientInstance) {
+    githubClientInstance = new GitHubClient(accessToken);
+  }
+
+  return githubClientInstance;
 }
