@@ -1,13 +1,15 @@
+'use server';
+
+import Container from '@/components/Container';
 import Header from '@/components/Header';
-import ReposList from '@/components/ReposList';
 import { requireAuth } from '@/lib/auth';
 
-export default async function Home() {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAuth();
   return (
     <>
       <Header user={session.user} />
-      <ReposList />
+      <Container>{children}</Container>
     </>
   );
 }

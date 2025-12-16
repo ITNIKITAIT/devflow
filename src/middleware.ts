@@ -5,7 +5,7 @@ import { auth } from '@/lib/auth';
 export default async function middleware(request: NextRequest) {
   const session = await auth();
   if (session && session.user) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL('/repositories', request.url));
   }
   return NextResponse.next();
 }

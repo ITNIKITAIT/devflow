@@ -1,4 +1,4 @@
-import { Octokit } from '@octokit/rest';
+import { Octokit, type RestEndpointMethodTypes } from '@octokit/rest';
 
 import { requireAuth } from '../auth';
 
@@ -91,6 +91,19 @@ class GitHubClient {
     } catch (error) {
       console.error('Error fetching latest commit:', error);
       throw new Error('Failed to fetch latest commit');
+    }
+  }
+
+  async getRepositoryById(repoId: number) {
+    try {
+      const repo = await this.octokit.request('GET /repositories/:id', { id: repoId });
+      if (!repo) {
+        throw new Error('Repository not found');
+      }
+      return repo as RestEndpointMethodTypes['repos']['get']['response'];
+    } catch (error) {
+      console.error('Error fetching repository by ID:', error);
+      return null;
     }
   }
 }

@@ -12,7 +12,7 @@ export default function LoginPage() {
 
         <div className="mt-8">
           <button
-            onClick={() => signIn('github', { callbackUrl: '/' })}
+            onClick={() => signIn('github', { callbackUrl: '/repositories' })}
             className="flex w-full items-center justify-center gap-3 rounded-lg bg-gray-900 px-4 py-3 text-white hover:bg-gray-800 cursor-pointer transition"
           >
             Sign in with GitHub
