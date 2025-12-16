@@ -12,14 +12,16 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.11.1",
     "@octokit/auth-token": "^6.0.0",
     "@octokit/rest": "^22.0.1",
+    "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-prettier": "^5.5.4",
+    "lucide-react": "^0.561.0",
     "next": "16.0.8",
     "next-auth": "^5.0.0-beta.30",
-    "prisma": "^7.1.0",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   },
@@ -39,6 +41,7 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "prisma": "^7.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
