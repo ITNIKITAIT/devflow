@@ -15,11 +15,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  Authenticator Authenticator[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  repositories Repository[]
+  analyses Analysis[]
 }
 
 model Account {
@@ -53,79 +52,11 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@id([identifier, token])
-}
-
-model Authenticator {
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, credentialID])
-}
-
-model Repository {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  githubId      Int     @unique
-  name          String
-  fullName      String
-  url           String
-  defaultBranch String  @default("main")
-  language      String?
-  description   String?
-  isPrivate     Boolean @default(false)
-
-  analyses Analysis[]
-  settings RepositorySettings?
-
-  lastSyncedAt DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  @@index([userId])
-  @@index([githubId])
-  @@map("repositories")
-}
-
-model RepositorySettings {
-  id           String     @id @default(cuid())
-  repositoryId String     @unique
-  repository   Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
-
-  autoAnalyze    Boolean @default(true)
-  webhookEnabled Boolean @default(false)
-  webhookSecret  String?
-
-  minComplexity     Int @default(10)
-  minDuplicateLines Int @default(6)
-
-  ignoredPaths String[] @default([])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("repository_settings")
-}
-
 model Analysis {
-  id           String     @id @default(cuid())
+  id           String @id @default(cuid())
   repositoryId String
-  repository   Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   commitSha String
   branch    String @default("main")
@@ -154,7 +85,6 @@ model Analysis {
   completedAt DateTime?
   createdAt   DateTime  @default(now())
 
-  @@index([repositoryId])
   @@index([status])
   @@index([createdAt])
   @@map("analyses")

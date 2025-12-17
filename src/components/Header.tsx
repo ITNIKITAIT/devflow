@@ -32,7 +32,7 @@ export default function Header({ user }: HeaderProps) {
                   <span className="text-sm font-medium leading-none text-foreground">
                     {user.name}
                   </span>
-                  <span className="text-xs text-muted-foreground">{user.username}</span>
+                  {/* <span className="text-xs text-muted-foreground">{user.username}</span> */}
                 </div>
 
                 {user.image ? (
@@ -57,7 +57,7 @@ export default function Header({ user }: HeaderProps) {
                   title="Sign out"
                   aria-label="Sign out"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="size-5" />
                 </Button>
               </div>
             </div>

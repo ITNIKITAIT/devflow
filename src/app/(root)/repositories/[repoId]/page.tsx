@@ -29,7 +29,13 @@ export default async function RepositoryPage({ params }: PageProps) {
 
   const repo = response.data;
 
-  const repoTree = await client.getRepositoryTree(repo.owner.login, repo.name, repo.default_branch);
+  const latestCommitSha = await client.getLatestCommit(
+    repo.owner.login,
+    repo.name,
+    repo.default_branch
+  );
+
+  const repoTree = await client.getRepositoryTree(repo.owner.login, repo.name, latestCommitSha);
 
   return (
     <div className="space-y-8 py-8">
@@ -39,7 +45,7 @@ export default async function RepositoryPage({ params }: PageProps) {
 
       <div className="grid gap-6 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
-          <AnalysisOverview />
+          <AnalysisOverview repo={repo} />
           <FileTree files={repoTree} owner={repo.owner.login} repoName={repo.name} />
         </div>
 
