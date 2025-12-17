@@ -1,5 +1,6 @@
 import type { Analysis, AnalysisStatus } from '@prisma/client';
 import { AlertCircle, CheckCircle2, Clock, Eye, GitCommit, XCircle } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/components/shared/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/shared/card';
@@ -80,9 +81,11 @@ export function AnalysisList({ analyses }: { analyses: Analysis[] }) {
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button variant="outline" className="gap-2 cursor-pointer">
-                    <Eye className="h-4 w-4" /> View Details
-                  </Button>
+                  <Link href={`/repositories/${analysis.repositoryId}/${analysis.id}`}>
+                    <Button variant="outline" className="gap-2 cursor-pointer">
+                      <Eye className="h-4 w-4" /> View Details
+                    </Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
