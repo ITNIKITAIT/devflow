@@ -29,6 +29,7 @@ class GitHubClient {
         language: repo.language,
         isPrivate: repo.private,
         description: repo.description,
+        owner: repo.owner.login,
       }));
     } catch (error) {
       console.error('Error fetching repositories:', error);
@@ -44,6 +45,7 @@ class GitHubClient {
         tree_sha: sha,
         recursive: 'true',
       });
+
       return data.tree
         .filter((item) => item.type === 'blob') // Only files
         .filter((item) => {
@@ -114,6 +116,7 @@ export async function getGitHubClient() {
   if (!accessToken) {
     throw new Error('No GitHub access token found');
   }
+
   if (!githubClientInstance) {
     githubClientInstance = new GitHubClient(accessToken);
   }
