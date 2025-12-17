@@ -54,7 +54,7 @@ model Session {
 
 model Analysis {
   id           String @id @default(cuid())
-  repositoryId String
+  repositoryId Int
   userId       String
   user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 

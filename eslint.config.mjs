@@ -55,7 +55,6 @@ const eslintConfig = defineConfig([
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
-      curly: ['error', 'all'],
       'prettier/prettier': ['error'],
     },
     settings: {

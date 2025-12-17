@@ -1,9 +1,8 @@
 'use client';
 
-import { GitBranch, Lock, Play, Star, Eye, Unlock } from 'lucide-react';
+import { GitBranch, Lock, Star, Eye, Unlock } from 'lucide-react';
 
 import { Badge } from '@/components/shared/badge';
-import { Button } from '@/components/shared/button';
 
 interface RepositoryHeaderProps {
   repo: {
@@ -52,11 +51,6 @@ export function RepositoryHeader({ repo }: RepositoryHeaderProps) {
           </div>
         </div>
       </div>
-
-      <Button size="lg" className="gap-2 shadow-lg">
-        <Play className="h-4 w-4" />
-        Analyze Repository
-      </Button>
     </div>
   );
 }
