@@ -44,7 +44,6 @@ class GitHubClient {
         tree_sha: sha,
         recursive: 'true',
       });
-
       return data.tree
         .filter((item) => item.type === 'blob') // Only files
         .filter((item) => {
@@ -115,7 +114,6 @@ export async function getGitHubClient() {
   if (!accessToken) {
     throw new Error('No GitHub access token found');
   }
-
   if (!githubClientInstance) {
     githubClientInstance = new GitHubClient(accessToken);
   }
