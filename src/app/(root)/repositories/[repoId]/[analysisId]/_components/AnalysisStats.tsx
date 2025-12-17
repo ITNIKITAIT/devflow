@@ -1,5 +1,5 @@
 import type { Analysis } from '@prisma/client';
-import { FileCode, GitBranch, GitCommit, TrendingDown, TrendingUp } from 'lucide-react';
+import { FileCode, GitBranch, GitCommit, TrendingDown } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/shared/card';
 
@@ -56,29 +56,6 @@ export function AnalysisStats({ analysis }: AnalysisStatsProps) {
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Total Lines</span>
             <span className="font-semibold">{analysis.totalLines.toLocaleString()}</span>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            Code Quality Metrics
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Avg Complexity</span>
-            <span className="font-semibold">{analysis.avgComplexity.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Duplicate Lines</span>
-            <span className="font-semibold">{analysis.duplicateLines.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Duplicate %</span>
-            <span className="font-semibold">{analysis.duplicatePercent.toFixed(2)}%</span>
           </div>
         </CardContent>
       </Card>
