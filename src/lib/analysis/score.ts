@@ -19,13 +19,8 @@ const SEVERITY_WEIGHTS = {
 
 const TYPE_WEIGHTS = {
   [IssueType.GOD_CLASS]: 1.5,
-  [IssueType.CIRCULAR_DEPENDENCY]: 1.5,
-  [IssueType.DEEP_NESTING]: 1.2,
-  [IssueType.COMPLEXITY]: 1.2,
   [IssueType.LONG_FUNCTION]: 1.1,
   [IssueType.MAGIC_NUMBER]: 1.0,
-  [IssueType.DUPLICATE]: 1.0,
-  [IssueType.DEAD_CODE]: 0.8,
   [IssueType.LONG_PARAMETER_LIST]: 1.0,
   [IssueType.LARGE_FILE]: 1.0,
 };
