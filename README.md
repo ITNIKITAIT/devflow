@@ -69,6 +69,15 @@ Modern software development faces several critical challenges:
 - **Jest** - Unit and E2E testing
 - **Husky** - Git hooks for quality gates
 
+## CI/CD Setup
+
+This project includes a GitHub Actions CI workflow that automatically runs on pull requests and pushes to main branches. The CI pipeline checks:
+
+- **Code Formatting** - Ensures code follows Prettier formatting rules
+- **Linting** - Runs ESLint to catch code quality issues
+- **Build** - Ensures the project builds successfully
+- **Tests** - Runs unit, integration, and UI tests
+
 ### Prerequisites
 
 - Node.js 20+ and npm
