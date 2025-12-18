@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  analyses Analysis[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Analysis {
+  id           String @id @default(cuid())
+  repositoryId Int
+  userId       String
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  commitSha String
+  branch    String @default("main")
+
+  totalFiles    Int @default(0)
+  totalLines    Int @default(0)
+  analyzedFiles Int @default(0)
+
+  avgComplexity    Float @default(0)
+  duplicateLines   Int   @default(0)
+  duplicatePercent Float @default(0)
+
+  totalIssues    Int @default(0)
+  criticalIssues Int @default(0)
+  highIssues     Int @default(0)
+  mediumIssues   Int @default(0)
+  lowIssues      Int @default(0)
+
+  techDebtScore Float @default(100)
+
+  status AnalysisStatus @default(PENDING)
+
+  issues Issue[]
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("analyses")
+}
+
+enum AnalysisStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model Issue {
+  id         String   @id @default(cuid())
+  analysisId String
+  analysis   Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  type     IssueType
+  severity IssueSeverity
+
+  filePath  String
+  lineStart Int
+  lineEnd   Int
+
+  message     String  @db.Text
+  suggestion  String? @db.Text
+  codeSnippet String? @db.Text
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([analysisId])
+  @@index([type])
+  @@index([severity])
+  @@index([filePath])
+  @@map("issues")
+}
+
+enum IssueType {
+  LONG_FUNCTION
+  LONG_PARAMETER_LIST
+  GOD_CLASS
+  MAGIC_NUMBER
+  LARGE_FILE
+}
+
+enum IssueSeverity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFO
+}
