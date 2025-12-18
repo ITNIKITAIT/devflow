@@ -28,16 +28,15 @@ Modern software development faces several critical challenges:
 
 ## Integrations
 
-- **GitHub OAuth**: Seamless authentication and repository access
-- **PR Comments**: Automated feedback on pull requests (future feature)
-- **Badge Generation**: Display your code quality score in README
+**GitHub OAuth**: Seamless authentication and repository access
 
-## User Experience
+## Usage
 
-- **Interactive Code Viewer**: Browse code with highlighted issues
-- **Diff Comparison**: See how issues changed between analyses
-- **Filtering & Search**: Quickly find specific types of issues
-- **Export Reports**: Generate PDF/JSON reports
+1. **Sign In**: Use your GitHub account to authenticate
+2. **Select Repository**: Choose a repository from your GitHub account
+3. **Start Analysis**: Click "Start Analysis" to scan your codebase
+4. **View Results**: Browse through detected issues, view code snippets, and see suggestions
+5. **Track Progress**: Monitor your technical debt score and see how it changes over time
 
 ## Technology Stack
 
@@ -66,7 +65,7 @@ Modern software development faces several critical challenges:
 - **GitHub Actions** - CI/CD automation
 - **Vercel** - Deployment platform
 - **ESLint + Prettier** - Code quality and formatting
-- **Jest** - Unit and E2E testing
+- **Jest** - Unit, UI and Integraion testing
 - **Husky** - Git hooks for quality gates
 
 ## CI/CD Setup
@@ -78,102 +77,101 @@ This project includes a GitHub Actions CI workflow that automatically runs on pu
 - **Build** - Ensures the project builds successfully
 - **Tests** - Runs unit, integration, and UI tests
 
-### Prerequisites
+## Installation
 
-- Node.js 20+ and npm
-- GitHub account
-- Git
+- **Node.js 20+** and npm
+- **PostgreSQL** database (version 14 or higher)
+- **GitHub account** with OAuth app configured
+- **Git**
 
-### Component Diagram
+### Step 1: Clone the Repository
 
-![Open Component Diagram](https://github.com/user-attachments/assets/e6c1ffd0-117e-4d46-9ca3-4e96578ac7d4)
+```bash
+git clone <repository-url>
+cd devflow
+```
 
-### ER Diagram
+### Step 2: Install Dependencies
 
-```mermaid
-erDiagram
-    User ||--o{ Repository : owns
-    Repository ||--o{ Analysis : has
-    Analysis ||--o{ Issue : contains
-    Repository }o--|| RepositorySettings : has
+```bash
+npm install
+```
 
-    User {
-        string id PK
-        string email UK
-        string name
-        string githubId UK
-        string githubUsername
-        string accessToken
-        string avatarUrl
-        datetime createdAt
-        datetime updatedAt
-    }
+### Step 3: Set Up Environment Variables
 
-    Repository {
-        string id PK
-        string userId FK
-        int githubId UK
-        string name
-        string fullName
-        string url
-        string defaultBranch
-        string language
-        boolean isPrivate
-        datetime lastSyncedAt
-        datetime createdAt
-        datetime updatedAt
-    }
+Create a `.env` file in the root directory with the following variables:
 
-    RepositorySettings {
-        string id PK
-        string repositoryId FK
-        boolean autoAnalyze
-        boolean webhookEnabled
-        string webhookSecret
-        int minComplexity
-        int minDuplicateLines
-        string[] ignoredPaths
-        datetime createdAt
-        datetime updatedAt
-    }
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/devflow?schema=public"
 
-    Analysis {
-        string id PK
-        string repositoryId FK
-        string commitSha
-        string branch
-        int totalFiles
-        int totalLines
-        int analyzedFiles
-        float avgComplexity
-        int duplicateLines
-        float duplicatePercent
-        int totalIssues
-        int criticalIssues
-        int highIssues
-        int mediumIssues
-        int lowIssues
-        float techDebtScore
-        string status
-        datetime startedAt
-        datetime completedAt
-        datetime createdAt
-    }
+# GitHub OAuth
+GITHUB_CLIENT_ID="your_github_client_id"
+GITHUB_CLIENT_SECRET="your_github_client_secret"
 
-    Issue {
-        string id PK
-        string analysisId FK
-        string type
-        string severity
-        string filePath
-        int lineStart
-        int lineEnd
-        string message
-        string suggestion
-        string codeSnippet
-        json metadata
-        datetime createdAt
-    }
+# NextAuth
+NEXTAUTH_SECRET="your_random_secret_key"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Node Environment
+NODE_ENV="development"
+```
+
+### Step 4: Set Up Database
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate deploy
+
+# (Optional) Open Prisma Studio to view your database
+npm run studio
+```
+
+## Running the Application
+
+### Development Mode
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`
+
+## Code Analysis Features
+
+DevFlow analyzes your codebase and detects various code quality issues:
+
+- **Long Functions**: Identifies functions that exceed recommended line counts
+- **Long Parameter Lists**: Detects functions with too many parameters
+- **God Classes**: Finds classes that have too many responsibilities
+- **Magic Numbers**: Identifies hardcoded numeric values that should be constants
+- **Large Files**: Flags files that are too large and should be split
+
+Each issue is categorized by severity (Critical, High, Medium, Low, Info) and includes suggestions for improvement.
+
+## Project Structure
+
+```
+devflow/
+├── src/
+│   ├── app/              # Next.js App Router pages and routes
+│   │   ├── (auth)/       # Authentication pages
+│   │   ├── (root)/       # Protected routes
+│   │   └── api/          # API routes
+│   ├── components/       # React components
+│   ├── lib/              # Utility functions and services
+│   │   ├── analysis/     # Code analysis engine
+│   │   ├── auth.ts       # Authentication configuration
+│   │   ├── db.ts         # Database client
+│   │   └── github/       # GitHub API client
+│   └── tests/            # Test utilities and helpers
+├── prisma/               # Database schema and migrations
+└── public/               # Static assets
 ```
 
 ## Team
