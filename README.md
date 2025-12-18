@@ -68,6 +68,98 @@ Modern software development faces several critical challenges:
 - **Jest** - Unit, UI and Integraion testing
 - **Husky** - Git hooks for quality gates
 
+### Component Diagram
+
+![Open Component Diagram](https://github.com/user-attachments/assets/e6c1ffd0-117e-4d46-9ca3-4e96578ac7d4)
+
+### ER Diagram
+
+```mermaid
+erDiagram
+    User ||--o{ Repository : owns
+    Repository ||--o{ Analysis : has
+    Analysis ||--o{ Issue : contains
+    Repository }o--|| RepositorySettings : has
+
+    User {
+        string id PK
+        string email UK
+        string name
+        string githubId UK
+        string githubUsername
+        string accessToken
+        string avatarUrl
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Repository {
+        string id PK
+        string userId FK
+        int githubId UK
+        string name
+        string fullName
+        string url
+        string defaultBranch
+        string language
+        boolean isPrivate
+        datetime lastSyncedAt
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    RepositorySettings {
+        string id PK
+        string repositoryId FK
+        boolean autoAnalyze
+        boolean webhookEnabled
+        string webhookSecret
+        int minComplexity
+        int minDuplicateLines
+        string[] ignoredPaths
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Analysis {
+        string id PK
+        string repositoryId FK
+        string commitSha
+        string branch
+        int totalFiles
+        int totalLines
+        int analyzedFiles
+        float avgComplexity
+        int duplicateLines
+        float duplicatePercent
+        int totalIssues
+        int criticalIssues
+        int highIssues
+        int mediumIssues
+        int lowIssues
+        float techDebtScore
+        string status
+        datetime startedAt
+        datetime completedAt
+        datetime createdAt
+    }
+
+    Issue {
+        string id PK
+        string analysisId FK
+        string type
+        string severity
+        string filePath
+        int lineStart
+        int lineEnd
+        string message
+        string suggestion
+        string codeSnippet
+        json metadata
+        datetime createdAt
+    }
+```
+
 ## CI/CD Setup
 
 This project includes a GitHub Actions CI workflow that automatically runs on pull requests and pushes to main branches. The CI pipeline checks:
