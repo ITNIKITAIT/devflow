@@ -4,7 +4,7 @@ import { requireAuth } from '../auth';
 
 let githubClientInstance: GitHubClient | null = null;
 
-class GitHubClient {
+export class GitHubClient {
   private octokit: Octokit;
 
   constructor(accessToken: string) {
