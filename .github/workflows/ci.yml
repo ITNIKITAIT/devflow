@@ -33,21 +33,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: devflow_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+    needs: lint
 
     steps:
       - name: Checkout code
@@ -64,13 +50,6 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/devflow_test
-
-      - name: Run database migrations
-        run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/devflow_test
 
       - name: Build project
         run: npm run build
@@ -79,11 +58,11 @@ jobs:
           GITHUB_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
           GITHUB_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/devflow_test
 
   test:
     name: Test
     runs-on: ubuntu-latest
+    needs: build
 
     services:
       postgres:
