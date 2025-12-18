@@ -9,7 +9,9 @@
     "lint": "npx eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
-    "test": "jest",
+    "test": "jest --runInBand",
+    "test:unit": "jest --testPathPattern=__tests__",
+    "test:integration": "jest --testPathPattern=integration --runInBand",
     "test:watch": "jest --watch",
     "prepare": "husky install",
     "studio": "prisma studio"
@@ -26,6 +28,7 @@
     "clsx": "^2.1.1",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-prettier": "^5.5.4",
+    "jest-mock-extended": "^4.0.0",
     "lucide-react": "^0.561.0",
     "next": "16.0.8",
     "next-auth": "^5.0.0-beta.30",

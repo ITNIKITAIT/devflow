@@ -35,7 +35,7 @@ export async function analyzeRepository(
     });
 
     if (existingAnalysis) {
-      throw new Error('Analysis already exists for the latest commit');
+      return { success: false, error: 'Analysis already exists for the latest commit' };
     }
 
     const analysis = await prisma.analysis.create({
